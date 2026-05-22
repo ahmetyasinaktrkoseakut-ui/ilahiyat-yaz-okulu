@@ -963,11 +963,23 @@ export default function App() {
 
       {/* Footer copyright */}
       <footer className="mt-20 border-t border-slate-200 py-8 text-center bg-white">
-        <div className="max-w-7xl mx-auto px-6 text-xs text-slate-400 space-y-2">
-          <p>© 2026 İlahiyat & İslami İlimler Yaz Okulu Takip Sistemi.</p>
-          <p className="max-w-lg mx-auto leading-relaxed">
-            Bu portal, Whatsapp ve sosyal medya gruplarındaki bilgi dağınıklığını önlemek üzere öğrenciler tarafından ortak üretilmiştir. Bilgilerin doğruluğunu resmi akademik duyurulardan onaylayınız.
-          </p>
+        <div className="max-w-7xl mx-auto px-6 space-y-5">
+          <div className="flex justify-center">
+             <div className="bg-indigo-50/80 border border-indigo-100 px-5 py-3 rounded-2xl inline-block shadow-sm">
+               <p className="text-xs sm:text-sm font-bold text-indigo-900">
+                 Geliştirici: <span className="font-black text-indigo-600 text-sm sm:text-base ml-1">Ahmet Yasin Aktürk</span>
+               </p>
+               <p className="text-[10px] sm:text-xs text-indigo-700/80 font-medium mt-1">
+                 İlahiyat Öğrencilerinin Hizmetine Sunulmuştur
+               </p>
+             </div>
+          </div>
+          <div className="text-[10px] sm:text-xs text-slate-400 max-w-lg mx-auto leading-relaxed font-medium space-y-1.5">
+            <p>© {new Date().getFullYear()} İlahiyat & İslami İlimler Yaz Okulu Takip Sistemi.</p>
+            <p>
+              Bu portal, bilgi dağınıklığını önlemek amacıyla geliştirilmiştir. Lütfen bilgilerin doğruluğunu resmi akademik duyurulardan teyit ediniz.
+            </p>
+          </div>
         </div>
       </footer>
 
