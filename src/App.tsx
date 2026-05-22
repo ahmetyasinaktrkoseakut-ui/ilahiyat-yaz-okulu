@@ -252,7 +252,7 @@ export default function App() {
     return filteredFaculties[0] || allFacultiesList[0];
   }, [allFacultiesList, filteredFaculties, selectedFacultyId]);
 
-  // Compute dynamic/fallback recent updates for Bento 2 block
+  // Compute dynamic recent updates for Bento 2 block
   const recentUpdates = useMemo(() => {
     const hasUpdates = allFacultiesList.filter(f => f.lastUpdatedBy);
     const sorted = [...hasUpdates].sort((a, b) => {
@@ -261,56 +261,7 @@ export default function App() {
       return timeB - timeA;
     });
 
-    const results = sorted.slice(0, 3);
-
-    // Fallbacks if we do not have enough real modifications yet
-    if (results.length < 3) {
-      const fallbacks = [
-        {
-          id: "eskisehir-osmangazi-ilh",
-          univName: "Eskişehir Osmangazi Üni.",
-          displayName: "Mehtap Şahin",
-          time: "4dk önce"
-        },
-        {
-          id: "ankara-ilh",
-          univName: "Ankara Üni. İlahiyat",
-          displayName: "Hasan Kaya",
-          time: "15dk önce"
-        },
-        {
-          id: "marmara-ilh",
-          univName: "Marmara İlahiyat",
-          displayName: "Elif Demir",
-          time: "1sa önce"
-        }
-      ];
-
-      for (let i = 0; i < 3; i++) {
-        if (results.length >= 3) break;
-        const fb = fallbacks[i];
-        if (!results.some(r => r.id === fb.id)) {
-          const matchedOrig = allFacultiesList.find(x => x.id === fb.id) || {
-            id: fb.id,
-            univName: fb.univName,
-            facultyName: "İlahiyat Fakültesi",
-            city: "Eskişehir",
-            status: "açıyor"
-          };
-          results.push({
-            ...matchedOrig,
-            lastUpdatedBy: {
-              uid: `fb-${i}`,
-              displayName: fb.displayName,
-              email: "hasan@lahiyat.edu.tr",
-              photoURL: ""
-            },
-            lastUpdatedAt: fb.time
-          } as any);
-        }
-      }
-    }
-    return results;
+    return sorted.slice(0, 3);
   }, [allFacultiesList]);
 
   // Google Login / Demo Login logic
@@ -529,32 +480,39 @@ export default function App() {
                 Son Güncellemeler
               </h3>
               <div className="space-y-4">
-                {recentUpdates.map((update, idx) => (
-                  <div 
-                    key={update.id || idx}
-                    className="flex gap-3 items-start cursor-pointer hover:bg-slate-50/80 p-1.5 rounded-xl transition-all"
-                    onClick={() => setSelectedFacultyId(update.id)}
-                  >
-                    {update.lastUpdatedBy?.photoURL ? (
-                      <img 
-                        src={update.lastUpdatedBy.photoURL} 
-                        alt="Profile" 
-                        className="w-8 h-8 rounded-full border border-slate-200 shrink-0"
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 text-xs font-extrabold border border-indigo-100">
-                        {update.lastUpdatedBy?.displayName?.charAt(0) || "Y"}
-                      </div>
-                    )}
-                    <div className="min-w-0 flex-1 leading-tight">
-                      <p className="text-sm font-bold text-slate-900 truncate tracking-tight">{update.univName}</p>
-                      <p className="text-xs text-slate-500 truncate mt-0.5">
-                        {update.lastUpdatedBy?.displayName || "Misafir"} • {formatLastUpdated(update.lastUpdatedAt)}
-                      </p>
-                    </div>
+                {recentUpdates.length === 0 ? (
+                  <div className="text-center py-6">
+                    <p className="text-xs font-semibold text-slate-400">Henüz bir güncelleme yapılmadı.</p>
+                    <p className="text-[10px] text-slate-300 mt-1 uppercase tracking-wider">İlk güncelleyen sen ol!</p>
                   </div>
-                ))}
+                ) : (
+                  recentUpdates.map((update, idx) => (
+                    <div 
+                      key={update.id || idx}
+                      className="flex gap-3 items-start cursor-pointer hover:bg-slate-50/80 p-1.5 rounded-xl transition-all"
+                      onClick={() => setSelectedFacultyId(update.id)}
+                    >
+                      {update.lastUpdatedBy?.photoURL ? (
+                        <img 
+                          src={update.lastUpdatedBy.photoURL} 
+                          alt="Profile" 
+                          className="w-8 h-8 rounded-full border border-slate-200 shrink-0"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 text-xs font-extrabold border border-indigo-100">
+                          {update.lastUpdatedBy?.displayName?.charAt(0) || "Y"}
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1 leading-tight">
+                        <p className="text-sm font-bold text-slate-900 truncate tracking-tight">{update.univName}</p>
+                        <p className="text-xs text-slate-500 truncate mt-0.5">
+                          {update.lastUpdatedBy?.displayName || "Misafir"} • {formatLastUpdated(update.lastUpdatedAt)}
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
