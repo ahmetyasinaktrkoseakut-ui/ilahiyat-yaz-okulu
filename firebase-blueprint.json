@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "faculty": {
+      "title": "Faculty",
+      "description": "Details about a Turkish university's Divinity or Islamic Sciences Faculty, including their summer school offering.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier, usually computed from university and faculty names"
+        },
+        "city": {
+          "type": "string",
+          "description": "One of 81 Turkish provinces where the university resides"
+        },
+        "univName": {
+          "type": "string",
+          "description": "Name of the university (e.g., Eskişehir Osmangazi Üniversitesi)"
+        },
+        "facultyName": {
+          "type": "string",
+          "description": "Type of faculty (e.g., İlahiyat Fakültesi or İslami İlimler Fakültesi)"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["açıyor", "açmıyor", "belirsiz"],
+          "description": "Status of the summer school"
+        },
+        "announcementUrl": {
+          "type": "string",
+          "description": "Optional official URL of the summer school announcement"
+        },
+        "coursesText": {
+          "type": "string",
+          "description": "List of open courses as text or structured lines"
+        },
+        "courses": {
+          "type": "array",
+          "description": "List of courses running in the summer school, containing code and name"
+        },
+        "lastUpdatedBy": {
+          "type": "object",
+          "description": "Contains metadata about the authenticated user who updated it (uid, name, email, photo)"
+        },
+        "lastUpdatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The exact time this document was last modified"
+        }
+      },
+      "required": ["id", "city", "univName", "facultyName", "status"]
+    }
+  },
+  "firestore": {
+    "/faculties/{facultyId}": {
+      "schema": "faculty",
+      "description": "Database of theological/Islamic faculties across Turkey provinces."
+    }
+  }
+}

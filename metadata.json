@@ -1,0 +1,6 @@
+{
+  "name": "Yaz Okulu Takip Sistemi",
+  "description": "81 ildeki İlahiyat ve İslami İlimler fakültelerinin yaz okulu durumlarını, açılan derslerini ve güncellemelerini takip edebileceğiniz, öğrenci katkılarıyla güncellenen bilgi paylaşım platformu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
