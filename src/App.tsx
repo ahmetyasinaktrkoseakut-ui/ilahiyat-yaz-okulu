@@ -78,6 +78,15 @@ export default function App() {
     }
   };
 
+  // Helper to determine the reset cutoff date (September 1st of the current academic year)
+  const getResetCutoff = (): number => {
+    const now = new Date();
+    const currentMonth = now.getMonth(); // 0-indexed (8 = September)
+    const currentYear = now.getFullYear();
+    const cutoffYear = currentMonth >= 8 ? currentYear : currentYear - 1;
+    return new Date(cutoffYear, 8, 1).getTime(); // September 1st of cutoff year
+  };
+
   const [isDemoMode, setIsDemoMode] = useState(!isFirebaseConfigured);
   const [showSetupBanner, setShowSetupBanner] = useState(!isFirebaseConfigured);
   const [isLoading, setIsLoading] = useState(true);
@@ -183,16 +192,39 @@ export default function App() {
   // 3. Merged faculties list
   const allFacultiesList = useMemo(() => {
     const liveSource = isDemoMode ? localLiveFaculties : dbFaculties;
+    const cutoffMs = getResetCutoff();
+    
+    // Process live records to apply yearly reset
+    const processLiveRecord = (record: Faculty | undefined): Faculty | undefined => {
+      if (!record) return undefined;
+      const updatedMs = getTimestampMs(record.lastUpdatedAt);
+      if (updatedMs > 0 && updatedMs < cutoffMs) {
+        // Record is from previous academic year. Reset its dynamic state.
+        return {
+          ...record,
+          status: 'belirsiz',
+          coursesText: undefined,
+          courses: undefined,
+          announcementUrl: undefined,
+          lastUpdatedBy: undefined,
+          lastUpdatedAt: undefined
+        };
+      }
+      return record;
+    };
     
     // Merge baseline records
     const baseline = INITIAL_FACULTIES.map(facility => {
-      const liveRecord = liveSource[facility.id];
+      const liveRecord = processLiveRecord(liveSource[facility.id]);
       return liveRecord ? { ...facility, ...liveRecord } : facility;
     });
 
     // Add any newly created custom faculties in liveSource that are not in baseline
     const baselineIds = new Set(INITIAL_FACULTIES.map(f => f.id));
-    const customFaculties = (Object.values(liveSource) as Faculty[]).filter(f => !baselineIds.has(f.id));
+    const customFaculties = (Object.values(liveSource) as Faculty[])
+      .filter(f => !baselineIds.has(f.id))
+      .map(processLiveRecord)
+      .filter(Boolean) as Faculty[];
 
     return [...baseline, ...customFaculties].sort((a, b) => a.city.localeCompare(b.city, 'tr'));
   }, [INITIAL_FACULTIES, dbFaculties, localLiveFaculties, isDemoMode]);
