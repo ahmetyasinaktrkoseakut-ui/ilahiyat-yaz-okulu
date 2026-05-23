@@ -13,8 +13,21 @@ interface HeaderProps {
 
 export function Header({ user, onLogin, onLogout, isDemo }: HeaderProps) {
   return (
-    <header id="header-container" className="bg-white border-b border-slate-200 sticky top-0 z-50 shrink-0 shadow-xs">
-      <div className="max-w-7xl mx-auto h-16 px-4 sm:px-6 flex items-center justify-between">
+    <header id="header-container" className="bg-white border-b border-slate-200 sticky top-0 z-50 shrink-0 shadow-xs flex flex-col">
+      {/* Top Announcement Banner (Visible on all devices) */}
+      <div className="bg-gradient-to-r from-indigo-700 via-indigo-600 to-indigo-700 text-white px-3 sm:px-4 py-2 text-center w-full shadow-sm relative z-50 border-b border-indigo-500/50">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 sm:gap-3">
+          <span className="relative hidden sm:flex h-2.5 w-2.5 shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-300 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-200"></span>
+          </span>
+          <p className="text-[11px] sm:text-xs font-medium tracking-wide leading-tight">
+            Bu sistem <strong className="font-black bg-white/20 px-1.5 py-0.5 rounded shadow-sm mx-0.5 text-white">AHMET YASİN AKTÜRK</strong> tarafından İlahiyat öğrencilerinin hizmetine sunulmuştur.
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto w-full h-16 px-4 sm:px-6 flex items-center justify-between">
         
         {/* Logo & Branding */}
         <div className="flex items-center gap-3">
@@ -25,19 +38,6 @@ export function Header({ user, onLogin, onLogout, isDemo }: HeaderProps) {
             <div>
               <h1 className="text-base sm:text-lg font-extrabold tracking-tight text-slate-900 leading-tight">İlahiyat Yaz Okulu</h1>
               <p className="text-[9px] sm:text-[10px] text-slate-500 font-semibold tracking-wide uppercase">Bilgi Paylaşım & Takip Platformu</p>
-            </div>
-            
-            {/* Desktop Badge next to the text */}
-            <div className="hidden lg:flex items-center border-l-2 border-indigo-100/60 pl-4 py-0.5">
-              <div className="bg-indigo-50/80 border border-indigo-100 px-3 py-1.5 rounded-xl flex items-center gap-2">
-                <span className="relative flex h-2.5 w-2.5 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500"></span>
-                </span>
-                <p className="text-[11px] font-semibold text-indigo-900 leading-tight">
-                  Bu sistem <strong className="font-black text-indigo-700 bg-white border border-indigo-100 px-1.5 py-0.5 rounded-md mx-0.5 shadow-sm">AHMET YASİN AKTÜRK</strong> tarafından İlahiyat öğrencilerinin hizmetine sunulmak amacıyla yapılmıştır.
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -98,14 +98,6 @@ export function Header({ user, onLogin, onLogout, isDemo }: HeaderProps) {
           )}
         </div>
 
-      </div>
-
-      {/* Mobile Badge - Visible only on small screens below lg */}
-      <div className="lg:hidden bg-indigo-50/80 border-t border-indigo-100/50 px-4 py-2 flex items-start gap-2 shadow-inner">
-        <Info size={14} className="text-indigo-600 shrink-0 mt-0.5" />
-        <p className="text-[10px] sm:text-[11px] font-semibold text-indigo-900 leading-tight">
-          Bu sistem <strong className="font-black text-indigo-700">AHMET YASİN AKTÜRK</strong> tarafından İlahiyat öğrencilerinin hizmetine sunulmak amacıyla yapılmıştır.
-        </p>
       </div>
 
       {/* Info stripe for view mode */}
